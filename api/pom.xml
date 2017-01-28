@@ -6,6 +6,7 @@
     <groupId>pl.softech.example.mvn</groupId>
     <artifactId>mm-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <relativePath>../parent</relativePath>
   </parent>
   <groupId>pl.softech.example.mvn</groupId>
   <artifactId>mm-api</artifactId>
