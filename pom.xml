@@ -13,5 +13,6 @@
     <module>parent</module>
     <module>api</module>
     <module>echo-service</module>
+    <module>test-resources</module>
   </modules>
 </project>
