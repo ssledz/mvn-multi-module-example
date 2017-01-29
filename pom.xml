@@ -9,6 +9,10 @@
 
     <name>mm-example</name>
 
+    <properties>
+        <scm.git.repository.path>${local.git.repo.path}/mvn-multi-module-example.git</scm.git.repository.path>
+    </properties>
+
     <modules>
         <module>parent</module>
         <module>api</module>
@@ -17,8 +21,8 @@
     </modules>
 
     <scm>
-        <url>${local.git.repo.path}</url>
-        <developerConnection>${local.git.repo.path}</developerConnection>
+        <url>${scm.git.repository.path}</url>
+        <developerConnection>${scm.git.repository.path}</developerConnection>
       <tag>mm-example-1.0</tag>
   </scm>
 
