@@ -1,8 +1,8 @@
 #!/bin/bash
 
-release_version=1.5
+release_version=
 # The next development version
-development_version=1.6-SNAPSHOT
+development_version=
 # Provide an optional comment prefix, e.g. for your bug tracking system
 scm_comment_prefix='[maven-release-plugin] '
 
@@ -53,16 +53,33 @@ while getopts ":r:d:c:h" opt; do
 
 done
 
-exit 2
+if [[ -z $release_version ]]; then
+  release_version=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive org.codehaus.mojo:exec-maven-plugin:1.3.1:exec 2>/dev/null)
+  release_version=${release_version%%-SNAPSHOT}
+fi
+
+if [[ ! -z $development_version ]]; then
+  development_version=${development_version%%-SNAPSHOT}-SNAPSHOT
+fi
+
+
+echo "release_version=$release_version"
+echo "development_version=$development_version"
+
 
 # Start the release by creating a new release branch
 git checkout -b release/$release_version develop
 
+mvn_params="release:prepare release:perform -DscmCommentPrefix=\"$scm_comment_prefix\" -DreleaseVersion=$release_version"
+[[ ! -z $development_version ]] && mvn_params=$mvn_params" -DdevelopmentVersion=$development_version"
+
+mvn --batch-mode $mvn_params
+
 # The Maven release
-mvn --batch-mode release:prepare release:perform \
- -DscmCommentPrefix="$scm_comment_prefix" \
- -DreleaseVersion=$release_version \
- -DdevelopmentVersion=$development_version
+#mvn --batch-mode release:prepare release:perform \
+# -DscmCommentPrefix="$scm_comment_prefix" \
+# -DreleaseVersion=$release_version \
+# -DdevelopmentVersion=$development_version
 
 # Clean up and finish
 # get back to the develop branch
