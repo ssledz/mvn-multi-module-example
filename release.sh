@@ -1,10 +1,10 @@
 #!/bin/bash
 
-release_version=1.4
+release_version=1.5
 # The next development version
-development_version=1.5-SNAPSHOT
+development_version=1.6-SNAPSHOT
 # Provide an optional comment prefix, e.g. for your bug tracking system
-scm_comment_prefix='Prefix: '
+scm_comment_prefix='[maven-release-plugin] '
 
 # Start the release by creating a new release branch
 git checkout -b release/$release_version develop
