@@ -78,10 +78,16 @@ git checkout -b release/$release_version develop
 #mvn "$mvn_args"
 
 # The Maven release
+if [[ -z $development_version ]]; then
 mvn --batch-mode release:prepare release:perform \
  -DscmCommentPrefix="$scm_comment_prefix" \
- -DreleaseVersion=$release_version #\
-# -DdevelopmentVersion=$development_version
+ -DreleaseVersion=$release_version
+else
+mvn --batch-mode release:prepare release:perform \
+ -DscmCommentPrefix="$scm_comment_prefix" \
+ -DreleaseVersion=$release_version \
+ -DdevelopmentVersion=$development_version
+fi
 
 # Clean up and finish
 # get back to the develop branch
