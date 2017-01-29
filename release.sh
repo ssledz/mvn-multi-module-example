@@ -75,7 +75,7 @@ mvn_args="release:prepare release:perform -DscmCommentPrefix=\"$scm_comment_pref
 
 echo "mvn $mvn_args"
 
-$("mvn $mvn_args")
+$("/home/ssledz/.sdkman/candidates/maven/current/bin/mvn $mvn_args")
 
 # The Maven release
 #mvn --batch-mode release:prepare release:perform \
