@@ -22,7 +22,6 @@
             <groupId>pl.softech.example.mvn</groupId>
             <artifactId>mm-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>pl.softech.example.mvn</groupId>
             <artifactId>mm-test-resources</artifactId>
@@ -30,7 +29,14 @@
             <type>zip</type>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
