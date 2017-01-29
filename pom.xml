@@ -4,7 +4,7 @@
 
     <groupId>pl.softech.example.mvn</groupId>
     <artifactId>mm-example</artifactId>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>mm-example</name>
@@ -23,7 +23,7 @@
     <scm>
         <url>${scm.git.repository.path}</url>
         <developerConnection>${scm.git.repository.path}</developerConnection>
-      <tag>v1.4</tag>
+      <tag>mm-example-1.0</tag>
   </scm>
 
     <build>
