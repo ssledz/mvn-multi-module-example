@@ -70,17 +70,17 @@ echo "development_version=$development_version"
 # Start the release by creating a new release branch
 git checkout -b release/$release_version develop
 
-mvn_args="release:prepare release:perform -DscmCommentPrefix=\"$scm_comment_prefix\" -DreleaseVersion=$release_version"
-[[ ! -z $development_version ]] && mvn_args="--batch-mode "$mvn_args" -DdevelopmentVersion=$development_version"
+#mvn_args="release:prepare release:perform -DscmCommentPrefix=\"$scm_comment_prefix\" -DreleaseVersion=$release_version"
+#[[ ! -z $development_version ]] && mvn_args="--batch-mode "$mvn_args" -DdevelopmentVersion=$development_version"
 
-echo "mvn $mvn_args"
+#echo "mvn $mvn_args"
 
-$("/home/ssledz/.sdkman/candidates/maven/current/bin/mvn $mvn_args")
+#mvn "$mvn_args"
 
 # The Maven release
-#mvn --batch-mode release:prepare release:perform \
-# -DscmCommentPrefix="$scm_comment_prefix" \
-# -DreleaseVersion=$release_version \
+mvn --batch-mode release:prepare release:perform \
+ -DscmCommentPrefix="$scm_comment_prefix" \
+ -DreleaseVersion=$release_version #\
 # -DdevelopmentVersion=$development_version
 
 # Clean up and finish
