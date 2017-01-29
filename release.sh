@@ -71,11 +71,11 @@ echo "development_version=$development_version"
 git checkout -b release/$release_version develop
 
 mvn_params="release:prepare release:perform -DscmCommentPrefix=\"$scm_comment_prefix\" -DreleaseVersion=$release_version"
-[[ ! -z $development_version ]] && mvn_params=$mvn_params" -DdevelopmentVersion=$development_version"
+[[ ! -z $development_version ]] && mvn_params="--batch-mode "$mvn_params" -DdevelopmentVersion=$development_version"
 
-echo "mvn --batch-mode $mvn_params"
+echo "mvn $mvn_params"
 
-mvn --batch-mode $mvn_params
+mvn $mvn_params
 
 # The Maven release
 #mvn --batch-mode release:prepare release:perform \
