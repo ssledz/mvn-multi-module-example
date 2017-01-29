@@ -79,14 +79,14 @@ git checkout -b release/$release_version develop
 
 # The Maven release
 if [[ -z $development_version ]]; then
-mvn --batch-mode release:prepare release:perform \
- -DscmCommentPrefix="$scm_comment_prefix" \
- -DreleaseVersion=$release_version
+  mvn --batch-mode release:prepare release:perform \
+    -DscmCommentPrefix="$scm_comment_prefix" \
+    -DreleaseVersion=$release_version
 else
-mvn --batch-mode release:prepare release:perform \
- -DscmCommentPrefix="$scm_comment_prefix" \
- -DreleaseVersion=$release_version \
- -DdevelopmentVersion=$development_version
+  mvn --batch-mode release:prepare release:perform \
+    -DscmCommentPrefix="$scm_comment_prefix" \
+    -DreleaseVersion=$release_version \
+    -DdevelopmentVersion=$development_version
 fi
 
 # Clean up and finish
