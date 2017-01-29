@@ -47,11 +47,11 @@
 
     <distributionManagement>
         <repository>
-            <id>local</id>
+            <id>mvn-local</id>
             <url>${local.mvn.repo.path}</url>
         </repository>
         <snapshotRepository>
-            <id>local</id>
+            <id>mvn-local</id>
             <url>${local.mvn.snapshots-repo.path}</url>
         </snapshotRepository>
     </distributionManagement>

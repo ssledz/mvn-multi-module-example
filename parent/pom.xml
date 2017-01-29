@@ -54,22 +54,22 @@
 
     <repositories>
         <repository>
-            <id>local</id>
+            <id>mvn-local</id>
             <url>${local.mvn.repo.path}</url>
         </repository>
         <repository>
-            <id>local-snapshots</id>
+            <id>mvn-local-snapshots</id>
             <url>${local.mvn.snapshots-repo.path}</url>
         </repository>
     </repositories>
 
     <distributionManagement>
         <repository>
-            <id>local</id>
+            <id>mvn-local</id>
             <url>${local.mvn.repo.path}</url>
         </repository>
         <snapshotRepository>
-            <id>local</id>
+            <id>mvn-local</id>
             <url>${local.mvn.snapshots-repo.path}</url>
         </snapshotRepository>
     </distributionManagement>
