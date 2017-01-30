@@ -16,7 +16,7 @@ git push local master
 git checkout -b develop origin/develop
 git push local develop
 git branch master -u local/master
-git branch develop -u develop/master
+git branch develop -u local/develop
 
 cat << EOF
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
