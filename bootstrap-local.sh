@@ -12,7 +12,9 @@ cd git-repo/mvn-multi-module-example.git && git init --bare
 
 cd $root
 git remote add local file:///$dest/git-repo/mvn-multi-module-example.git
+git push local master
 git checkout -b develop origin/develop
+git push local develop
 git branch master -u local/master
 git branch develop -u develop/master
 
