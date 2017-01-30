@@ -12,6 +12,9 @@ cd git-repo/mvn-multi-module-example.git && git init --bare
 
 cd $root
 git remote add local file:///$dest/git-repo/mvn-multi-module-example.git
+git checkout -b develop origin/develop
+git branch master -u local/master
+git branch develop -u develop/master
 
 cat << EOF
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
