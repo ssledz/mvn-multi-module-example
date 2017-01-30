@@ -1,12 +1,86 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>pl.softech.example.mvn</groupId>
+        <artifactId>mm-echo-service</artifactId>
+        <version>1.14</version>
+    </parent>
     <groupId>pl.softech.example.mvn</groupId>
-    <artifactId>mm-echo-service</artifactId>
-    <version>1.11</version>
-  </parent>
-  <groupId>pl.softech.example.mvn</groupId>
-  <artifactId>mm-echo-service-impl-2</artifactId>
-  <name>mm-echo-service-impl-2</name>
+    <artifactId>mm-echo-service-impl-2</artifactId>
+    <name>mm-echo-service-impl-2</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>make-jar-with-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <finalName>${project.artifactId}-${project.version}-dist</finalName>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>pl.softech.example.mvn.impl2.Main</mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy dist jar</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy-file</goal>
+                                </goals>
+                                <configuration>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <packaging>jar</packaging>
+                                    <version>${project.version}</version>
+                                    <classifier>dist</classifier>
+                                    <file>
+                                        target/${project.artifactId}-${project.version}-dist.jar
+                                    </file>
+                                    <url>
+                                        ${local.mvn.repo.path}
+                                    </url>
+                                    <repositoryId>maven</repositoryId>
+                                    <generatePom>false</generatePom>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>

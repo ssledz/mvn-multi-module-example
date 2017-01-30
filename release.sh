@@ -81,12 +81,14 @@ git checkout -b release/$release_version develop
 if [[ -z $development_version ]]; then
   mvn --batch-mode release:prepare release:perform \
     -DscmCommentPrefix="$scm_comment_prefix" \
-    -DreleaseVersion=$release_version
+    -DreleaseVersion=$release_version \
+    -Darguments="-Drelease"
 else
   mvn --batch-mode release:prepare release:perform \
     -DscmCommentPrefix="$scm_comment_prefix" \
     -DreleaseVersion=$release_version \
-    -DdevelopmentVersion=$development_version
+    -DdevelopmentVersion=$development_version \
+    -Darguments="-Drelease"
 fi
 
 # Clean up and finish

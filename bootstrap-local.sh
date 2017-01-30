@@ -7,11 +7,16 @@ dest=$1
 
 cd $dest
 mkdir mvn-repo
-mdkir -p git-repo/mvn-multi-module-example.git
+mkdir -p git-repo/mvn-multi-module-example.git
 cd git-repo/mvn-multi-module-example.git && git init --bare
 
 cd $root
 git remote add local file:///$dest/git-repo/mvn-multi-module-example.git
+git push local master
+git checkout -b develop origin/develop
+git push local develop
+git branch master -u local/master
+git branch develop -u local/develop
 
 cat << EOF
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
