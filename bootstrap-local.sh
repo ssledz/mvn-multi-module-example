@@ -7,7 +7,7 @@ dest=$1
 
 cd $dest
 mkdir mvn-repo
-mdkir -p git-repo/mvn-multi-module-example.git
+mkdir -p git-repo/mvn-multi-module-example.git
 cd git-repo/mvn-multi-module-example.git && git init --bare
 
 cd $root
