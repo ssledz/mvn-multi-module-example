@@ -120,7 +120,7 @@ exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge previous version i
 # Get back on the develop branch
 git checkout develop
 # Finally push everything
-exit_if_error git push origin develop master
+exit_if_error git push local develop master
 exit_if_error git push --tags
 # Removing the release branch
 git branch -D release/$release_version
