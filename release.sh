@@ -107,20 +107,20 @@ args=$(echo $args | xargs)
 
 exit_if_error mvn release:prepare release:perform $args
 
-# Clean up and finish
-# get back to the develop branch
+echo clean up and finish
+echo get back to the develop branch
 git checkout develop
 
-# merge the version back into develop
+echo merge the version back into develop
 exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge release/$release_version into develop" release/$release_version
-# go to the master branch
+echo go to the master branch
 git checkout master
-# merge the version back into master but use the tagged version instead of the release/$releaseVersion HEAD
+echo merge the version back into master but use the tagged version instead of the release/$releaseVersion HEAD
 exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge previous version into master to avoid the increased version number" release/$release_version~1
-# Get back on the develop branch
+echo get back on the develop branch
 git checkout develop
-# Finally push everything
+echo finally push everything
 exit_if_error git push local develop master
 exit_if_error git push --tags
-# Removing the release branch
+echo removing the release branch
 git branch -D release/$release_version
