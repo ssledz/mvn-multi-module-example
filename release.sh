@@ -97,7 +97,7 @@ exit_if_error git checkout -b release/$release_version develop
 
 # The Maven release
 
-args="--batch-mode -DreleaseVersion=$release_version -DscmCommentPrefix='"${scm_comment_prefix}"' -Darguments='-Drelease'"
+args="--batch-mode -DreleaseVersion=$release_version -DscmCommentPrefix=\'"${scm_comment_prefix}"\' -Darguments=\'-Drelease\'"
 
 if [[ ! -z $development_version ]]; then
   args=$args" -DdevelopmentVersion=$development_version"
