@@ -10,6 +10,6 @@ public class SimpleEchoService implements EchoService {
 
     @Override
     public String echo(String message) {
-        return sString.format("Impl1: %s", message);
+        return String.format("Impl1: %s", message);
     }
 }

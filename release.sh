@@ -6,6 +6,32 @@ development_version=
 # Provide an optional comment prefix, e.g. for your bug tracking system
 scm_comment_prefix='[maven-release-plugin] '
 
+assert_exit_status() {
+
+  lambda() {
+    local val_fd=$(echo $@ | tr -d ' ' | cut -d':' -f2)
+    local arg=$1
+    shift
+    shift
+    local cmd=$(echo $@ | xargs -E ':')
+    local val=$(cat $val_fd)
+    eval $arg=$val
+    eval $cmd
+  }
+
+  local lambda=$1
+  shift
+
+  eval $@
+  local ret=$?
+  $lambda : <(echo $ret)
+
+}
+
+exit_if_error() {
+  assert_exit_status 'lambda status -> [[ $status -ne 0 ]] && echo [ERROR] Exiting because of mvn errors. && exit $status' $@
+}
+
 show_help() {
 cat << EOF
 
@@ -77,21 +103,24 @@ if [[ ! -z $development_version ]]; then
   args=$args" -DdevelopmentVersion=$development_version"
 fi
 
-echo $args | xargs mvn release:prepare release:perform
+args=$(echo $args | xargs)
+
+exit_if_error mvn release:prepare release:perform $args
 
 # Clean up and finish
 # get back to the develop branch
-##git checkout develop
+git checkout develop
 
 # merge the version back into develop
-##git merge --no-ff -m "$scm_comment_prefix Merge release/$release_version into develop" release/$release_version
+exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge release/$release_version into develop" release/$release_version
 # go to the master branch
-##git checkout master
+git checkout master
 # merge the version back into master but use the tagged version instead of the release/$releaseVersion HEAD
-##git merge --no-ff -m "$scm_comment_prefix Merge previous version into master to avoid the increased version number" release/$release_version~1
-# Removing the release branch
-##git branch -D release/$release_version
+exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge previous version into master to avoid the increased version number" release/$release_version~1
 # Get back on the develop branch
-##git checkout develop
+git checkout develop
 # Finally push everything
-##git push --all && git push --tags
+exit_if_error git push origin develop master
+exit_if_error git push --tags
+# Removing the release branch
+git branch -D release/$release_version
