@@ -112,11 +112,11 @@ echo get back to the develop branch
 git checkout develop
 
 echo merge the version back into develop
-exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge release/$release_version into develop" release/$release_version
+exit_if_error git merge --no-ff -m "\"$scm_comment_prefix Merge release/$release_version into develop\"" release/$release_version
 echo go to the master branch
 git checkout master
 echo merge the version back into master but use the tagged version instead of the release/$releaseVersion HEAD
-exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge previous version into master to avoid the increased version number" release/$release_version~1
+exit_if_error git merge --no-ff -m "\"$scm_comment_prefix Merge previous version into master to avoid the increased version number\"" release/$release_version~1
 echo get back on the develop branch
 git checkout develop
 echo finally push everything
