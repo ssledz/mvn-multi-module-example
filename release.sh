@@ -93,7 +93,7 @@ echo "release_version=$release_version"
 echo "development_version=$development_version"
 
 # Start the release by creating a new release branch
-##git checkout -b release/$release_version develop
+exit_if_error git checkout -b release/$release_version develop
 
 # The Maven release
 
