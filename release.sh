@@ -6,6 +6,32 @@ development_version=
 # Provide an optional comment prefix, e.g. for your bug tracking system
 scm_comment_prefix='[maven-release-plugin] '
 
+assert_exit_status() {
+
+  lambda() {
+    local val_fd=$(echo $@ | tr -d ' ' | cut -d':' -f2)
+    local arg=$1
+    shift
+    shift
+    local cmd=$(echo $@ | xargs -E ':')
+    local val=$(cat $val_fd)
+    eval $arg=$val
+    eval $cmd
+  }
+
+  local lambda=$1
+  shift
+
+  eval $@
+  local ret=$?
+  $lambda : <(echo $ret)
+
+}
+
+exit_if_error() {
+  assert_exit_status 'lambda status -> [[ $status -ne 0 ]] && echo [ERROR] Exiting because of mvn errors. && exit $status' $@
+}
+
 show_help() {
 cat << EOF
 
@@ -66,44 +92,35 @@ fi
 echo "release_version=$release_version"
 echo "development_version=$development_version"
 
-
 # Start the release by creating a new release branch
-git checkout -b release/$release_version develop
-
-#mvn_args="release:prepare release:perform -DscmCommentPrefix=\"$scm_comment_prefix\" -DreleaseVersion=$release_version"
-#[[ ! -z $development_version ]] && mvn_args="--batch-mode "$mvn_args" -DdevelopmentVersion=$development_version"
-
-#echo "mvn $mvn_args"
-
-#mvn "$mvn_args"
+exit_if_error git checkout -b release/$release_version develop
 
 # The Maven release
-if [[ -z $development_version ]]; then
-  mvn --batch-mode release:prepare release:perform \
-    -DscmCommentPrefix="$scm_comment_prefix" \
-    -DreleaseVersion=$release_version \
-    -Darguments="-Drelease"
-else
-  mvn --batch-mode release:prepare release:perform \
-    -DscmCommentPrefix="$scm_comment_prefix" \
-    -DreleaseVersion=$release_version \
-    -DdevelopmentVersion=$development_version \
-    -Darguments="-Drelease"
+
+args="--batch-mode -DreleaseVersion=$release_version -DscmCommentPrefix=\"$scm_comment_prefix\" -Darguments=\"-Drelease\""
+
+if [[ ! -z $development_version ]]; then
+  args=$args" -DdevelopmentVersion=$development_version"
 fi
 
-# Clean up and finish
-# get back to the develop branch
+args=$(echo $args | xargs)
+
+exit_if_error mvn release:prepare release:perform $args
+
+echo clean up and finish
+echo get back to the develop branch
 git checkout develop
 
-# merge the version back into develop
-git merge --no-ff -m "$scm_comment_prefix Merge release/$release_version into develop" release/$release_version
-# go to the master branch
+echo merge the version back into develop
+exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge release/$release_version into develop" release/$release_version
+echo go to the master branch
 git checkout master
-# merge the version back into master but use the tagged version instead of the release/$releaseVersion HEAD
-git merge --no-ff -m "$scm_comment_prefix Merge previous version into master to avoid the increased version number" release/$release_version~1
-# Removing the release branch
-git branch -D release/$release_version
-# Get back on the develop branch
+echo merge the version back into master but use the tagged version instead of the release/$releaseVersion HEAD
+exit_if_error git merge --no-ff -m "$scm_comment_prefix Merge previous version into master to avoid the increased version number" release/$release_version~1
+echo get back on the develop branch
 git checkout develop
-# Finally push everything
-git push --all && git push --tags
+echo finally push everything
+exit_if_error git push local develop master
+exit_if_error git push --tags
+echo removing the release branch
+git branch -D release/$release_version
